@@ -27,6 +27,16 @@ var getHomeworkGrade = function(penguin)
     return meanHomeworkGrade
 }
 
+var getQuizMean = function(penguin)
+{
+    var quizGrade = penguin.quiz.map(function(quiz)
+    {
+        return quiz.grade
+    })
+    var meanQuizGrade = d3.mean(quizGrade)
+    return meanQuizGrade
+}
+
 var initGraph = function(grades)
 {
     var screen = {width:"500", height:"500"}
@@ -72,10 +82,52 @@ var drawPlot = function(grades, screen, xScale, yScale)
                 .style("left", xPos+"px")
             
             d3.select("#penguin")
-                .append("img")
+              .selectAll("img")
                 .attr("src", function(penguin)
             {
                 return "imgs/"+penguin.picture
             })
         })
-    }  
+    } 
+
+var drawPlot2 = function(penguins, screen, xScale, yScale)
+{
+    d3.select("#graph")
+    .selectAll("circle")
+    .data(penguins)
+    .enter()
+    .append("circle")
+    .attr("cx", function(penguin)
+         {
+            return xScale(meanQuizGrade(penguin));
+    })
+    .attr("cy", function(penguin)
+         {
+            return yScale(meanHomeworkGrade(penguin));
+    })
+}
+
+var initGraph2 = function(grades)
+{
+    var screen = {width:"500", height:"500"}
+    
+    d3.select("#graph")
+      .attr("width", screen.width)
+      .attr("height", screen.height)
+    
+    var xScale = d3.scaleLinear()
+                    .domain([0, 100])
+                    .range([0, screen.width])
+    
+    var yScale = d3.scaleLinear()
+                    .domain([0, 100])
+                    .range([screen.height, 0])
+    drawPlot2(penguins, screen, xScale, yScale)
+}
+
+var onClick = function(button1)
+{
+    console.log("Final vs Homework Mean", button);
+    d3.select("#button1")
+        .on("click", function())
+}

@@ -1,0 +1,9 @@
+#tooltip.hidden
+{
+    display:none;
+}
+#tooltip
+{
+    position:absolute;
+    width:auto;
+}
